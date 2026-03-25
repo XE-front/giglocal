@@ -20,7 +20,7 @@ const isMenuOpen = ref(false);
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Browse Gigs', href: '/gigs' },
+  { label: 'Browse Gigs', href: '/browse-gigs' },
   { label: 'Booking Request', href: '/booking-requests' },
   { label: 'My Gigs', href: '/my-gigs' },
   { label: 'My Bookings', href: '/my-bookings' },
