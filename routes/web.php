@@ -9,6 +9,10 @@ Route::inertia('/', 'Welcome', [
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'Dashboard')->name('dashboard');
+
+    Route::inertia('browse-gigs', 'Browsing/BrowseGig')->name('browse-gigs');
+
+    Route::inertia('booking-list', 'Booking/BookingList')->name('booking-list');
 });
 
 require __DIR__.'/settings.php';

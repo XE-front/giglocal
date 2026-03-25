@@ -80,7 +80,12 @@ const scrollToSection = (sectionId: string) => {
 </script>
 
 <template>
-    <Head title="GigLocal - Find Local Services in Your Community" />
+    <Head >
+         <title>GigLocal - Find Local Services in Your Community</title>
+      
+        <link rel="shortcut icon" href="/Icons/GigLocalIcon.png" type="image/x-icon">
+
+    </Head>
     <div class="min-h-screen bg-white dark:bg-slate-950">
         <!-- Navigation Header -->
         <header class="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
