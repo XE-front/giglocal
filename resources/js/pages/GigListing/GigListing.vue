@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router} from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
@@ -80,8 +80,7 @@ const deleteGig = (gigId: number) => {
 };
 
 const createNewGig = () => {
-  // Later: redirect to "Create Gig" page using Inertia
-  alert('Navigate to "Create Gig" form (to be implemented)');
+    router.visit('/add-gig');
 };
 </script>
 

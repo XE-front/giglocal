@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import type { BreadcrumbItem } from '@/types';
+
 
 type Props = {
   breadcrumbs?: BreadcrumbItem[];
 };
+
+interface FlashProps {
+  success?: string;
+}
+
+const page = usePage<{ flash?: FlashProps }>();
+const successMessage = computed(() => page.props.flash?.success as string | undefined);
 
 withDefaults(defineProps<Props>(), {
   breadcrumbs: () => [],
@@ -39,7 +47,7 @@ const closeMenu = () => {
   <div class="min-h-screen bg-white dark:bg-slate-950">
     <!-- Global nav -->
     <header
-      class="flex items-center justify-between bg-white dark:bg-slate-800 px-4 py-3 shadow-sm border border-slate-200 dark:border-slate-700"
+      class="sticky top-0 z-50 flex items-center justify-between bg-white dark:bg-slate-800 px-4 py-3 shadow-sm border-b border-slate-200 dark:border-slate-700"
     >
       <div class="flex items-center gap-3">
         <!-- Hamburger -->
@@ -114,7 +122,12 @@ const closeMenu = () => {
         </div>
       </div>
     </header>
-
+    <div
+      v-if="successMessage"
+      class="bg-emerald-50 border-b border-emerald-200 text-emerald-800 px-4 py-2 text-sm"
+    >
+      {{ successMessage }}
+    </div>
     <!-- Overlay -->
     <div
       v-if="isMenuOpen"
