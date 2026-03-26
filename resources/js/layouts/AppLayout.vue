@@ -20,10 +20,10 @@ const isMenuOpen = ref(false);
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard' },
-  { label: 'Browse Gigs', href: '/browse-gigs' },
-  { label: 'Booking Request', href: '/booking-list' },
-  { label: 'My Gigs', href: '/my-gigs' },
-  { label: 'My Bookings', href: '/my-bookings' },
+  { label: 'Browse Gigs (As Client)', href: '/browse-gigs' },
+  { label: 'Booking Request (As Client)', href: '/booking-list' },
+  { label: 'My Gigs (As Provider)', href: '/my-gigs' },
+  { label: 'My Bookings (As Provider)', href: '/my-bookings' },
 ];
 
 const toggleMenu = () => {
