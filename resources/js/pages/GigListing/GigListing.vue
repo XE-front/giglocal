@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router} from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
@@ -17,32 +17,17 @@ type Gig = {
   title: string;
   category: string;
   price: string;
+  price_type: string;
   status: GigStatus;
   createdAt: string;
   bookingsCount: number;
 };
 
-// TODO: Replace with backend data from Inertia props
-const gigs = ref<Gig[]>([
-  {
-    id: 1,
-    title: 'House Cleaning (2‑bedroom apartment)',
-    category: 'Cleaning',
-    price: '$80',
-    status: 'active',
-    createdAt: 'Mar 10, 2026',
-    bookingsCount: 12,
-  },
-  {
-    id: 2,
-    title: 'Math Tutoring (High School)',
-    category: 'Tutoring',
-    price: '$45',
-    status: 'paused',
-    createdAt: 'Feb 22, 2026',
-    bookingsCount: 7,
-  },
-]);
+const props = defineProps<{
+  gigs: Gig[];
+}>();
+
+const gigs = ref<Gig[]>([...props.gigs]);
 
 const searchTerm = ref('');
 const statusFilter = ref<'all' | GigStatus>('all');
@@ -73,6 +58,9 @@ const statusBadgeClass = (status: GigStatus) => {
 const toggleStatus = (gig: Gig) => {
   gig.status = gig.status === 'active' ? 'paused' : 'active';
 };
+const goToEdit = (gigId: number) => {
+  router.visit(`gigs/${gigId}/edit`);
+};
 
 const deleteGig = (gigId: number) => {
   if (!confirm('Are you sure you want to delete this gig?')) return;
@@ -80,8 +68,7 @@ const deleteGig = (gigId: number) => {
 };
 
 const createNewGig = () => {
-  // Later: redirect to "Create Gig" page using Inertia
-  alert('Navigate to "Create Gig" form (to be implemented)');
+    router.visit('/add-gig');
 };
 </script>
 
@@ -157,6 +144,16 @@ const createNewGig = () => {
         </div>
       </section>
 
+      <!-- Drafts navigation -->
+      <div class="flex justify-end">
+        <Link
+          href="/my-gigs/drafts"
+          class="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
+        >
+          View Drafts
+        </Link>
+      </div>
+
       <!-- Gig list -->
       <section
         class="rounded-xl bg-white dark:bg-slate-800 px-4 py-4 shadow-sm border border-slate-200 dark:border-slate-700"
@@ -205,9 +202,12 @@ const createNewGig = () => {
                 </td>
                 <td class="px-4 py-3 align-top text-slate-700 dark:text-slate-200">
                   {{ gig.price }}
+                  <span class="text-xs text-slate-500 dark:text-slate-400">
+                    / {{ gig.price_type.replace('per ', '') }}
+                  </span>
                 </td>
                 <td class="px-4 py-3 align-top text-slate-700 dark:text-slate-200">
-                  {{ gig.bookingsCount }}
+                  {{ gig.bookingsCount | 0}}
                 </td>
                 <td class="px-4 py-3 align-top">
                   <span
@@ -229,6 +229,7 @@ const createNewGig = () => {
                     <button
                       type="button"
                       class="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"
+                      @click="goToEdit(gig.id)"
                     >
                       Edit
                     </button>
@@ -299,6 +300,7 @@ const createNewGig = () => {
               <button
                 type="button"
                 class="rounded-full border border-slate-200 px-3 py-1 font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-700"
+                @click="goToEdit(gig.id)"
               >
                 Edit
               </button>
