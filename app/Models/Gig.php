@@ -11,15 +11,22 @@ class Gig extends Model
         'title',
         'category_id',
         'description',
+        'street',
+        'barangay',
         'price',
         'price_type',
         'availability',
         'status',
+        'post_status',
         'image',
         'rating_avg',
         'total_reviews',
         'completion_count',
         "views_count"
+    ];
+
+    protected $casts = [
+        'availability' => 'date',
     ];
 
     public function user()

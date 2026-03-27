@@ -13,37 +13,52 @@ const breadcrumbs: BreadcrumbItem[] = [
 const props = defineProps<{
   categories: { id: number; name: string }[];
   barangays: { id: number; name: string }[];
+    gig: {
+        id: number;
+        title: string;
+        category_id: number | string;
+        description: string;
+        street: string | null;
+        barangay: string | null;
+        price: string | number;
+        price_type: string;
+        availability: string | null;
+        post_status: string; // 'posted' | 'archived' | 'draft'
+        status: 'active' | 'inactive';
+    };
+    isDraftEdit: boolean;
 }>();
 
-const categories = props.categories;
-const barangays = props.barangays;
+const { categories, barangays, gig, isDraftEdit } = props;
 
 const priceTypes = ['per hour', 'per day', 'per project'] as const;
 
 const form = useForm({
-  title: '',
-  category_id: '',
-  description: '',
-  street: '',
-  barangay: '',
-  price: '',
-  price_type: 'per hour',
-  availability: '',
+  title: gig.title ?? '',
+  category_id: gig.category_id ?? '',
+  description: gig.description ?? '',
+  street: gig.street ?? '',
+  barangay: gig.barangay ?? '',
+  price: gig.price ?? '',
+  price_type: gig.price_type ?? 'per hour',
+  availability: gig.availability ?? '',
+  status: gig.status ?? 'active',
   image: null as File | null,
-  post_status: 'posted',
+  post_status: gig.post_status ?? 'posted',
 });
 
 const submit = () => {
-  form.post_status = 'posted';
-  form.post('/gigs', {
+  if (isDraftEdit) {
+    form.post_status = 'posted';
+  }
+  form.post(`/gigs/${gig.id}`, {
     forceFormData: true,
   });
 };
 
 const saveDraft = () => {
-  console.log('Saving as draft...');
   form.post_status = 'draft';
-  form.post('/gigs/draft', {
+  form.post(`/gigs/${gig.id}/draft`, {
     forceFormData: true,
   });
 };
@@ -233,6 +248,20 @@ const handleFileChange = (e: Event) => {
               </p>
             </div>
 
+            <div v-if="!isDraftEdit">
+                <label class="block text-sm font-medium text-slate-800 dark:text-slate-100">
+                    Status
+                </label>
+                <select
+                    v-model="form.status"
+                    class="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+                    required
+                >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
             <!-- Image -->
             <div>
               <label class="block text-sm font-medium text-slate-800 dark:text-slate-100">
@@ -260,6 +289,7 @@ const handleFileChange = (e: Event) => {
             Cancel
           </a>
           <button
+            v-if="isDraftEdit"  
             type="button"
             class="inline-flex items-center rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
             :disabled="form.processing"
