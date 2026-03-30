@@ -108,17 +108,15 @@ const closeMenu = () => {
               2
             </span>
           </button>
-          <button
-            type="button"
+          <Link
+            href="profile-page"
             class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-slate-200"
           >
             <span class="sr-only">Profile</span>
-            <span
-              class="flex h-full w-full items-center justify-center bg-slate-800 text-xs font-semibold text-white"
-            >
+            <span class="flex h-full w-full items-center justify-center bg-slate-800 text-xs font-semibold text-white">
               JD
             </span>
-          </button>
+          </Link>
         </div>
       </div>
     </header>
