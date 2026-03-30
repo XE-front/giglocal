@@ -16,7 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::inertia('booking-list', 'Booking/BookingList')->name('booking-list');
 
-    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile-page');
     Route::get('my-gigs', [GigListingController::class, 'index'])->name('my-gigs');
     Route::get('my-gigs/drafts', [GigListingController::class, 'drafts'])->name('my-gigs.drafts');
 });

@@ -109,7 +109,7 @@ const closeMenu = () => {
             </span>
           </button>
           <Link
-            href="profile-page"
+            href="/profile"
             class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-slate-200"
           >
             <span class="sr-only">Profile</span>
