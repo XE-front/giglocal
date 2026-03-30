@@ -1,20 +1,49 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 import type { BreadcrumbItem } from '@/types';
 
+
 type Props = {
-    breadcrumbs?: BreadcrumbItem[];
+  breadcrumbs?: BreadcrumbItem[];
 };
 
+interface FlashProps {
+  success?: string;
+}
+
+const page = usePage<{ flash?: FlashProps }>();
+const successMessage = computed(() => page.props.flash?.success as string | undefined);
+
 withDefaults(defineProps<Props>(), {
-    breadcrumbs: () => [],
+  breadcrumbs: () => [],
 });
+
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+const isMenuOpen = ref(false);
+
+const navItems: NavItem[] = [
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Browse Gigs (As Client)', href: '/browse-gigs' },
+  { label: 'Booking Request (As Client)', href: '/booking-list' },
+  { label: 'My Gigs (As Provider)', href: '/my-gigs' },
+  { label: 'My Bookings (As Provider)', href: '/my-bookings' },
+];
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
 </script>
 
 <template>
-<<<<<<< Updated upstream
-    <div>
-        <slot />
-=======
   <div class="min-h-screen bg-white dark:bg-slate-950">
     <!-- Global nav -->
     <header
@@ -96,6 +125,35 @@ withDefaults(defineProps<Props>(), {
       class="bg-emerald-50 border-b border-emerald-200 text-emerald-800 px-4 py-2 text-sm"
     >
       {{ successMessage }}
->>>>>>> Stashed changes
     </div>
+    <!-- Overlay -->
+    <div
+      v-if="isMenuOpen"
+      class="fixed inset-0 z-40 bg-black/40"
+      @click="closeMenu"
+    />
+
+    <!-- Hamburger menu panel (dropdown below header) -->
+    <nav
+      v-if="isMenuOpen"
+      class="relative z-50 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-md px-4 py-3"
+    >
+      <ul class="max-w-7xl mx-auto space-y-1 text-sm">
+        <li v-for="item in navItems" :key="item.href">
+          <Link
+            :href="item.href"
+            class="block rounded px-3 py-2 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 transition font-medium cursor-pointer"
+            @click="closeMenu"
+          >
+            {{ item.label }}
+          </Link>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Page content -->
+    <main class="flex h-full flex-1 flex-col gap-6 bg-white dark:bg-slate-950 p-4">
+      <slot />
+    </main>
+  </div>
 </template>
