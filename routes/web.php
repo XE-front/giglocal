@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\GigListingController;
+use App\Http\Controllers\ProfileController;
 
 Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -15,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::inertia('booking-list', 'Booking/BookingList')->name('booking-list');
 
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('my-gigs', [GigListingController::class, 'index'])->name('my-gigs');
     Route::get('my-gigs/drafts', [GigListingController::class, 'drafts'])->name('my-gigs.drafts');
 });
